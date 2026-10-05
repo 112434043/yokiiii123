@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Bites - Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #faf5ee;
+            color: #333;
+            padding-bottom: 100px;
+        }
+
+        /* Navbar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 50px;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-area h2 {
+            color: #d84315;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo-area span {
+            font-size: 12px;
+            color: #777;
+            display: block;
+            margin-top: -4px;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #444;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: #d84315;
+            font-weight: 600;
+        }
+
+        .btn-logout {
+            background: #d84315;
+            color: #ffffff !important;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .btn-logout:hover {
+            background: #bf360c;
+        }
+
+        /* Header & Search */
+        .menu-hero {
+            background: #ffffff;
+            padding: 35px 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            margin-bottom: 30px;
+        }
+
+        .menu-hero h1 {
+            color: #2b1704;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 30px;
+            border: 2px solid #ffcc80;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-container input:focus {
+            border-color: #d84315;
+        }
+
+        .section-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .category-title {
+            font-size: 22px;
+            color: #d84315;
+            font-weight: 700;
+            margin: 30px 0 15px 0;
+            border-bottom: 2px solid #ffcc80;
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .food-card {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease;
+        }
+
+        .food-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .food-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 6px;
+        }
+
+        .card-price {
+            color: #e65100;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .card-btn {
+            margin-top: auto;
+            background: #fff3e0;
+            color: #e65100;
+            border: 1.5px solid #ffcc80;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .card-btn:hover {
+            background: #e65100;
+            color: #fff;
+            border-color: #e65100;
+        }
+
+        /* Not Found */
+        #noResults {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+            margin: 20px auto;
+            max-width: 500px;
+        }
+
+        #noResults h3 {
+            color: #d84315;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        #noResults p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Bottom Floating Bar */
+        .cart-bar {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2b1704;
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: 40px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 500px;
+            z-index: 1000;
+        }
+
+        .cart-bar-info span:first-child {
+            font-size: 13px;
+            color: #ffcc80;
+            display: block;
+        }
+
+        .cart-bar-info span:last-child {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .btn-continue {
+            background: #d84315;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 22px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .btn-continue:hover {
+            background: #ff5722;
+        }
+
+        footer {
+            background: #201309;
+            color: #cbb8ad;
+            text-align: center;
+            padding: 22px;
+            margin-top: 60px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-area">
+        <h2>Campus Bites</h2>
+        <span>College Canteen</span>
+    </div>
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="menu.html" class="active">Menu</a>
+        <a href="cart.html">Cart</a>
+        <a href="track.php">Track Order</a>
+        <a href="logout.php" class="btn-logout">Logout</a>
+    </nav>
+</header>
+
+<div class="menu-hero">
+    <h1>Canteen Menu</h1>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search food items (e.g. Biryani, Rice, Dosa)..." onkeyup="filterMenu()">
+    </div>
+</div>
+
+<div class="section-container">
+
+    <div id="noResults">
+        <h3>Item Not Found!</h3>
+        <p>Thiranjhedutha aahaaram menuyil illa.</p>
+    </div>
+
+    <!-- Non-Veg Items -->
+    <div class="category-section">
+        <h2 class="category-title">Non-Veg Specials</h2>
+        <div class="food-grid">
+            <div class="food-card" data-name="chicken biryani">
+                <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?q=80&w=600&auto=format&fit=crop" alt="Chicken Biryani">
+                <div class="card-body">
+                    <div class="card-title">Chicken Biryani</div>
+                    <div class="card-price">₹120</div>
+                    <button class="card-btn" onclick="addToCart('Chicken Biryani', 120)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="food-card" data-name="chicken fried rice">
+                <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?q=80&w=600&auto=format&fit=crop" alt="Chicken Fried Rice">
+                <div class="card-body">
+                    <div class="card-title">Chicken Fried Rice</div>
+                    <div class="card-price">₹70</div>
+                    <button class="card-btn" onclick="addToCart('Chicken Fried Rice', 70)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="food-card" data-name="chicken noodles">
+                <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=600&auto=format&fit=crop" alt="Chicken Noodles">
+                <div class="card-body">
+                    <div class="card-title">Chicken Noodles</div>
+                    <div class="card-price">₹75</div>
+                    <button class="card-btn" onclick="addToCart('Chicken Noodles', 75)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="food-card" data-name="chicken 65">
+                <img src="https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?q=80&w=600&auto=format&fit=crop" alt="Chicken 65">
+                <div class="card-body">
+                    <div class="card-title">Crispy Chicken 65</div>
+                    <div class="card-price">₹60</div>
+                    <button class="card-btn" onclick="addToCart('Crispy Chicken 65', 60)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="food-card" data-name="egg fried rice">
+                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=600&auto=format&fit=crop" alt="Egg Fried Rice">
+                <div class="card-body">
+                    <div class="card-title">Egg Fried Rice</div>
+                    <div class="card-price">₹60</div>
+                    <button class="card-btn" onclick="addToCart('Egg Fried Rice', 60)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="food-card" data-name="egg kothu parotta">
+                <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=600&auto=format&fit=crop" alt="Egg Kothu Parotta">
+                <div class="card-body">
+                    <div class="card-title">Egg Kothu Parotta</div>
+                    <div class="card-price">₹65</div>
+                    <button class="card-btn" onclick="addToCart('Egg Kothu Parotta', 65)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Veg Items -->
+    <div class="category-section">
+        <h2 class="category-title">Veg & Snacks</h2>
+        <div class="food-grid">
+            <div class="food-card" data-name="masala dosa">
+                <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?q=80&w=600&auto=format&fit=crop" alt="Masala Dosa">
+                <div class="card-body">
+                    <div class="card-title">Crispy Masala Dosa</div>
+                    <div class="card-price">₹40</div>
+                    <button class="card-btn" onclick="addToCart('Crispy Masala Dosa', 40)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="food-card" data-name="veg biryani">
+                <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?q=80&w=600&auto=format&fit=crop" alt="Veg Biryani">
+                <div class="card-body">
+                    <div class="card-title">Special Veg Biryani</div>
+                    <div class="card-price">₹60</div>
+                    <button class="card-btn" onclick="addToCart('Special Veg Biryani', 60)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="food-card" data-name="veg fried rice">
+                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=600&auto=format&fit=crop" alt="Veg Fried Rice">
+                <div class="card-body">
+                    <div class="card-title">Veg Fried Rice</div>
+                    <div class="card-price">₹50</div>
+                    <button class="card-btn" onclick="addToCart('Veg Fried Rice', 50)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="food-card" data-name="canteen hot tea chai">
+                <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=600&auto=format&fit=crop" alt="Tea">
+                <div class="card-body">
+                    <div class="card-title">Canteen Hot Tea</div>
+                    <div class="card-price">₹15</div>
+                    <button class="card-btn" onclick="addToCart('Canteen Hot Tea', 15)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="cart-bar" id="cartBar">
+    <div class="cart-bar-info">
+        <span id="cartCount">0 Items added</span>
+        <span id="cartTotal">₹0</span>
+    </div>
+    <a href="cart.html" class="btn-continue">Continue to Cart &rarr;</a>
+</div>
+
+<footer>
+    Good Food Fuels Great Minds! | &copy; Campus Bites. All rights reserved.
+</footer>
+
+<script>
+let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+function filterMenu() {
+    const input = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.food-card');
+    const categories = document.querySelectorAll('.category-section');
+    const noResults = document.getElementById('noResults');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const title = card.getAttribute('data-name');
+        if (title.includes(input)) {
+            card.style.display = 'flex';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    categories.forEach(cat => {
+        const visibleInCat = cat.querySelectorAll('.food-card[style*="display: flex"]');
+        if (input !== '' && visibleInCat.length === 0) {
+            cat.style.display = 'none';
+        } else {
+            cat.style.display = 'block';
+        }
+    });
+
+    if (visibleCount === 0) {
+        noResults.style.display = 'block';
+    } else {
+        noResults.style.display = 'none';
+    }
+}
+
+function updateCartUI() {
+    const cartBar = document.getElementById('cartBar');
+    const cartCount = document.getElementById('cartCount');
+    const cartTotal = document.getElementById('cartTotal');
+
+    if (cart.length > 0) {
+        cartBar.style.display = 'flex';
+        cartCount.innerText = `${cart.length} Item(s) added`;
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        cartTotal.innerText = `Total: ₹${total}`;
+    } else {
+        cartBar.style.display = 'none';
+    }
+}
+
+function addToCart(name, price) {
+    cart.push({ name: name, price: price });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartUI();
+}
+
+window.onload = updateCartUI;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Bites - Cart & Checkout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #faf5ee;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-area h2 {
+            color: #d84315;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .logo-area span {
+            font-size: 12px;
+            color: #777;
+            display: block;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #444;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.2s ease;
+            cursor: pointer;
+        }
+
+        nav a:hover, nav a.active {
+            color: #d84315;
+            font-weight: 600;
+        }
+
+        .btn-logout {
+            background: #d84315;
+            color: #ffffff !important;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .page-wrapper {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        .banner-img-container {
+            width: 100%;
+            height: 160px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 18px;
+            background: #ffe0b2;
+        }
+
+        .banner-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .summary-card h3 {
+            font-size: 19px;
+            color: #2b1704;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #ffeedd;
+            padding-bottom: 8px;
+        }
+
+        .order-items-list {
+            list-style: none;
+            max-height: 220px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+            padding-right: 5px;
+        }
+
+        .order-items-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 9px 0;
+            border-bottom: 1px dashed #eee;
+            font-size: 14px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 700;
+            color: #d84315;
+            padding-top: 10px;
+            border-top: 1.5px solid #ffeedd;
+        }
+
+        .form-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        .form-card h2 {
+            color: #2b1704;
+            font-size: 23px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .operating-badge {
+            background: #fff3e0;
+            color: #e65100;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+            border-left: 4px solid #ff9800;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 6px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1.5px solid #dcd1c7;
+            font-size: 14px;
+            outline: none;
+            background: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: #d84315;
+            box-shadow: 0 0 0 3px rgba(216, 67, 21, 0.1);
+        }
+
+        .error-msg {
+            color: #c62828;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .btn-order {
+            width: 100%;
+            background: linear-gradient(135deg, #d84315, #f4511e);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(216, 67, 21, 0.35);
+            transition: transform 0.2s, background 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-order:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-order:disabled {
+            background: #bbb;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            width: 90%;
+            max-width: 440px;
+            border-radius: 20px;
+            padding: 35px 28px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+            transform: scale(0.85);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .success-icon-wrap {
+            width: 75px;
+            height: 75px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 38px;
+        }
+
+        .modal-card h3 {
+            font-size: 22px;
+            color: #1f2937;
+            margin-bottom: 6px;
+        }
+
+        .modal-card p {
+            font-size: 13.5px;
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .order-badge-pill {
+            background: #fff3e0;
+            border: 1.5px dashed #ff9800;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 22px;
+            display: flex;
+            justify-content: space-around;
+            text-align: left;
+        }
+
+        .order-badge-pill div span {
+            font-size: 11px;
+            color: #8d6e63;
+            display: block;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .order-badge-pill div strong {
+            font-size: 16px;
+            color: #d84315;
+        }
+
+        .btn-track-now {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #d84315, #f4511e);
+            color: #fff;
+            padding: 13px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(216, 67, 21, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .btn-track-now:hover {
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background: #201309;
+            color: #cbb8ad;
+            text-align: center;
+            padding: 18px;
+            margin-top: auto;
+            font-size: 13px;
+        }
+
+        @media(max-width: 850px) {
+            .page-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-area">
+        <h2>Campus Bites</h2>
+        <span>College Canteen</span>
+    </div>
+    <!-- Hardcoded clean navigations preventing browser slash appends -->
+    <nav>
+        <a onclick="window.location.href='/campus-bites/home.html'">Home</a>
+        <a onclick="window.location.href='/campus-bites/menu.html'">Menu</a>
+        <a onclick="window.location.href='/campus-bites/cart.html'" class="active">Cart</a>
+        <a onclick="window.location.href='/campus-bites/track.php'">Track Order</a>
+        <a onclick="window.location.href='/campus-bites/logout.php'" class="btn-logout">Logout</a>
+    </nav>
+</header>
+
+<div class="page-wrapper">
+    <div class="summary-card">
+        <div class="banner-img-container">
+            <img class="banner-img" 
+                 src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=700&q=80" 
+                 alt="Delicious Food Meal">
+        </div>
+        <h3>Order Summary</h3>
+        <ul class="order-items-list" id="cartItemList"></ul>
+        <div class="total-row">
+            <span>Payable Amount:</span>
+            <span id="cartTotalPrice">₹0</span>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <h2>Checkout & Order Details</h2>
+        <div class="operating-badge">Operating Hours: 08:00 AM - 05:00 PM</div>
+
+        <form id="orderForm" onsubmit="handlePlaceOrder(event)">
+            <div class="form-group">
+                <label>Student Name (Alphabets only)</label>
+                <input type="text" id="studentName" placeholder="Ex: Ramesh Kumar" required oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
+            </div>
+
+            <div class="form-group">
+                <label>Student ID (Exact 9 digits)</label>
+                <input type="text" id="studentId" placeholder="Ex: 112434043" maxlength="9" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                <span class="error-msg" id="idError">Student ID must be exactly 9 digits.</span>
+            </div>
+
+            <div class="form-group">
+                <label>Department</label>
+                <input type="text" id="dept" placeholder="Ex: Information Technology" required>
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number (10 digits)</label>
+                <input type="tel" id="phone" placeholder="Ex: 9876543210" maxlength="10" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                <span class="error-msg" id="phoneError">Phone number must be exactly 10 digits.</span>
+            </div>
+
+            <div class="form-group">
+                <label>Select Pickup Time (08:00 AM to 05:00 PM)</label>
+                <select id="pickupTime" required>
+                    <option value="">-- Choose Pickup Time (08:00 AM - 05:00 PM) --</option>
+                </select>
+                <span class="error-msg" id="timeError">Please select a valid pickup time.</span>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn-order">Place Order &rarr;</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modern Success Modal Popup -->
+<div class="modal-overlay" id="successModal">
+    <div class="modal-card">
+        <div class="success-icon-wrap">✓</div>
+        <h3>Order Placed Successfully!</h3>
+        <p>Your meal is being prepared at Campus Bites canteen.</p>
+
+        <div class="order-badge-pill">
+            <div>
+                <span>Order ID</span>
+                <strong id="modalOrderId">#00</strong>
+            </div>
+            <div>
+                <span>Pickup Time</span>
+                <strong id="modalPickupTime">--:-- --</strong>
+            </div>
+        </div>
+
+        <a href="track.php" id="trackNowLink" class="btn-track-now">Track Order Status &rarr;</a>
+    </div>
+</div>
+
+<footer>
+    Good Food Fuels Great Minds! | &copy; Campus Bites
+</footer>
+
+<script>
+function populateTimeSlots() {
+    const select = document.getElementById('pickupTime');
+    const startHour = 8;
+    const endHour = 17;
+
+    for (let h = startHour; h <= endHour; h++) {
+        for (let m = 0; m < 60; m += 15) {
+            if (h === 17 && m > 0) break;
+
+            const hour12 = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            const formattedMinutes = m === 0 ? '00' : m;
+            const timeString = `${hour12 < 10 ? '0' + hour12 : hour12}:${formattedMinutes} ${ampm}`;
+
+            const opt = document.createElement('option');
+            opt.value = timeString;
+            opt.innerText = timeString;
+            select.appendChild(opt);
+        }
+    }
+}
+
+function renderCart() {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const list = document.getElementById('cartItemList');
+    const totalEl = document.getElementById('cartTotalPrice');
+
+    list.innerHTML = '';
+    if (cart.length === 0) {
+        list.innerHTML = '<li style="color: #888;">Cart is empty. Please add items from menu.</li>';
+        totalEl.innerText = '₹0';
+        return;
+    }
+
+    let total = 0;
+    cart.forEach(item => {
+        total += item.price;
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${item.name}</span><strong>₹${item.price}</strong>`;
+        list.appendChild(li);
+    });
+    totalEl.innerText = `₹${total}`;
+}
+
+async function handlePlaceOrder(e) {
+    e.preventDefault();
+
+    const studentName = document.getElementById('studentName').value.trim();
+    const studentId   = document.getElementById('studentId').value.trim();
+    const dept        = document.getElementById('dept').value.trim();
+    const phone       = document.getElementById('phone').value.trim();
+    const timeVal     = document.getElementById('pickupTime').value;
+    const submitBtn   = document.getElementById('submitBtn');
+
+    const idError    = document.getElementById('idError');
+    const phoneError = document.getElementById('phoneError');
+    const timeError  = document.getElementById('timeError');
+
+    idError.style.display = 'none';
+    phoneError.style.display = 'none';
+    timeError.style.display = 'none';
+
+    if (studentId.length !== 9) {
+        idError.style.display = 'block';
+        return;
+    }
+
+    if (phone.length !== 10) {
+        phoneError.style.display = 'block';
+        return;
+    }
+
+    if (!timeVal) {
+        timeError.style.display = 'block';
+        return;
+    }
+
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    if (cart.length === 0) {
+        alert("Cart is empty! Please add items first.");
+        return;
+    }
+
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+    const orderPayload = {
+        studentName: studentName,
+        studentId: studentId,
+        department: dept,
+        phone: phone,
+        pickupTime: timeVal,
+        items: cart,
+        totalAmount: total
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Placing Order...";
+
+    try {
+        const response = await fetch('place_order.php', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(orderPayload)
+        });
+
+        const rawText = await response.text();
+        let result;
+        try {
+            result = JSON.parse(rawText);
+        } catch(jsonErr) {
+            alert("Backend Error Output:\n" + rawText);
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Place Order →";
+            return;
+        }
+
+        if (result.status === 'success') {
+            localStorage.removeItem('cart');
+
+            document.getElementById('modalOrderId').innerText = '#' + result.order_id;
+            document.getElementById('modalPickupTime').innerText = timeVal;
+            document.getElementById('trackNowLink').href = `track.php?order_id=${result.order_id}`;
+            document.getElementById('successModal').classList.add('active');
+        } else {
+            alert("Order Error: " + result.message);
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Place Order →";
+        }
+    } catch (err) {
+        alert("Connection Error: " + err.message);
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Place Order →";
+    }
+}
+
+window.onload = function() {
+    renderCart();
+    populateTimeSlots();
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Bites - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #faf5ee;
+            color: #333;
+            padding-bottom: 90px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 50px;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-area h2 {
+            color: #d84315;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo-area span {
+            font-size: 12px;
+            color: #777;
+            display: block;
+            margin-top: -4px;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #444;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: #d84315;
+            font-weight: 600;
+        }
+
+        .btn-logout {
+            background: #d84315;
+            color: #ffffff !important;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .btn-logout:hover {
+            background: #bf360c;
+        }
+
+        /* Hero */
+        .hero {
+            height: 380px;
+            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)),
+                        url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #ffffff;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 16px;
+            max-width: 600px;
+            color: #f0f0f0;
+            margin-bottom: 25px;
+        }
+
+        .hero-btn {
+            background: linear-gradient(135deg, #e65100, #ff8f00);
+            color: #fff;
+            padding: 13px 32px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            box-shadow: 0 4px 15px rgba(230, 81, 0, 0.4);
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Popular Grid */
+        .section-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            color: #2b1704;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 25px;
+        }
+
+        .food-card {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease;
+        }
+
+        .food-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .food-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .card-price {
+            color: #e65100;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .card-btn {
+            margin-top: auto;
+            background: #fff3e0;
+            color: #e65100;
+            border: 1.5px solid #ffcc80;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .card-btn:hover {
+            background: #e65100;
+            color: #fff;
+            border-color: #e65100;
+        }
+
+        /* Bottom Floating Bar */
+        .cart-bar {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2b1704;
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: 40px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            align-items: center;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 500px;
+            z-index: 1000;
+        }
+
+        .cart-bar-info span:first-child {
+            font-size: 13px;
+            color: #ffcc80;
+            display: block;
+        }
+
+        .cart-bar-info span:last-child {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .btn-continue {
+            background: #d84315;
+            color: #ffffff;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s ease;
+        }
+
+        .btn-continue:hover {
+            background: #ff5722;
+        }
+
+        footer {
+            background: #201309;
+            color: #cbb8ad;
+            text-align: center;
+            padding: 22px;
+            margin-top: 60px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-area">
+        <h2>Campus Bites</h2>
+        <span>College Canteen</span>
+    </div>
+    <nav>
+        <a href="home.html" class="active">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="cart.html">Cart</a>
+        <a href="track.php">Track Order</a>
+        <a href="logout.php" class="btn-logout">Logout</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Good Food, Good Mood!</h1>
+    <p>Pre-order your food easily and skip the canteen waiting line.</p>
+    <a href="menu.html" class="hero-btn">Order Now</a>
+</section>
+
+<div class="section-container">
+    <div class="section-header">
+        <h2>Popular Items</h2>
+        <p>Top ordered picks by campus students today</p>
+    </div>
+
+    <div class="food-grid">
+        <div class="food-card">
+            <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?q=80&w=600&auto=format&fit=crop" alt="Masala Dosa">
+            <div class="card-body">
+                <div class="card-title">Crispy Masala Dosa</div>
+                <div class="card-price">₹40</div>
+                <button class="card-btn" onclick="addToCart('Crispy Masala Dosa', 40)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="food-card">
+            <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?q=80&w=600&auto=format&fit=crop" alt="Veg Biryani">
+            <div class="card-body">
+                <div class="card-title">Special Veg Biryani</div>
+                <div class="card-price">₹60</div>
+                <button class="card-btn" onclick="addToCart('Special Veg Biryani', 60)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="food-card">
+            <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?q=80&w=600&auto=format&fit=crop" alt="Chicken Fried Rice">
+            <div class="card-body">
+                <div class="card-title">Chicken Fried Rice</div>
+                <div class="card-price">₹70</div>
+                <button class="card-btn" onclick="addToCart('Chicken Fried Rice', 70)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="food-card">
+            <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=600&auto=format&fit=crop" alt="Tea">
+            <div class="card-body">
+                <div class="card-title">Canteen Hot Tea</div>
+                <div class="card-price">₹15</div>
+                <button class="card-btn" onclick="addToCart('Canteen Hot Tea', 15)">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cart-bar" id="cartBar">
+    <div class="cart-bar-info">
+        <span id="cartCount">0 Items added</span>
+        <span id="cartTotal">₹0</span>
+    </div>
+    <a href="cart.html" class="btn-continue">Continue to Cart &rarr;</a>
+</div>
+
+<footer>
+    Good Food Fuels Great Minds! | &copy; Campus Bites. All rights reserved.
+</footer>
+
+<script>
+let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+function updateCartUI() {
+    const cartBar = document.getElementById('cartBar');
+    const cartCount = document.getElementById('cartCount');
+    const cartTotal = document.getElementById('cartTotal');
+
+    if (cart.length > 0) {
+        cartBar.style.display = 'flex';
+        cartCount.innerText = `${cart.length} Item(s) added`;
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        cartTotal.innerText = `Total: ₹${total}`;
+    } else {
+        cartBar.style.display = 'none';
+    }
+}
+
+function addToCart(name, price) {
+    cart.push({ name: name, price: price });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartUI();
+}
+
+window.onload = updateCartUI;
+</script>
+
+</body>
+</html>
